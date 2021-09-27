@@ -12,7 +12,7 @@ const JWT_SECRET = 'somerandomKeyto@@#~~@#%'
 var token = null
 let username = null;
 //Dd connection
-const url ="mongodb+srv://max:maxpassword@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
+const url ="mongodb+srv://max:@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
 mongoose.connect(url, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
