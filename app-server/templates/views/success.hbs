@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<head>
+    <!-- CSS only -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"> </script>
+</head>
+
+<body>
+    <div class=".col-md-3">
+        <div class="alert alert-success alert-dismissible">
+            <h1 class="display-3"><div id="username"> </div></h1>
+            <!--links -->
+            <div>
+            </div>
+        </div>
+        <div style="padding: 6px;">
+            <nav aria-label="breadcrumb" style="padding-left: 0px;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div  style="padding: 20px;"><strong> <div class="alert alert-info alert-dismissible">User Data</div></strong>
+            <table id="divIncidents" class="table table-striped">
+                <thread>
+                   <tr class="trNews">
+                    <th class="thNews">userName</th>
+                    <th class="thNews">Phone</th>
+                    <th class="thNews">Email</th>
+                    <th class="thNews">Age</th>
+                </tr>
+                </thread>
+            </table>
+        </div>
+        <div id="divErr"></div>
+    </body>
+<script>
+   $(document).ready(function () {
+       getallusers()
+       getusername()
+   
+});
+
+function getallusers(){
+    $.ajax({  
+       url: "/api/getall",  
+       type: "GET",  
+       contentType: "application/json; charset=utf-8",  
+       dataType: "json",  
+       cache: false,  
+     }).done(function(data) {  
+        let trHTML = '';  
+        let i = 0;
+        $.each(data, function (i, item) {  
+        if (data[i] != null)
+            {  
+            trHTML += '<tr class="trNews"><td class="tdNews">' + data[i].username+'</td><td class="tdNews">' 
+                + data[i].phone + '</td><td class="tdNews">' + data[i].email + '</td><td class="tdNews">' + data[i].age + '</td></tr>';  
+            }
+        });  
+        $('#divIncidents').append(trHTML);//To add the table row to table  
+       })  
+       .fail(function() {  
+             $('#divErr').append("error");// To display the error in div  
+            });  
+}
+
+function getusername(){
+    $.ajax({  
+       url:'/api/getusername',  
+       type: "GET",  
+       contentType: "application/json; charset=utf-8",  
+       dataType: "json",  
+       cache: false,  
+     }).done(function(data) {  
+       document.getElementById("username").innerText ="Welcome :" data["data"].username
+});
+} 
+</script>
+</html>

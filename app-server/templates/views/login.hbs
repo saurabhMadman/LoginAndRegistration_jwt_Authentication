@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<head>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+   crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"> </script>
+</head>
+
+<body>
+  <div class=".col-md-3">
+    <div class="bg-success p-2 text-dark bg-opacity-50">
+      <div>{{>header}}</div>
+    </div>
+    </br>
+    <div>
+
+      <nav aria-label="breadcrumb" style="padding-left: 200px;">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+        </ol>
+      </nav>
+
+      <form id="login-form" class="form-horizontal" style="padding-left:300px;" action="/api/login" onsubmit="return validate()" 
+                 method="post">
+        <fieldset>
+
+          <!-- Form Name -->
+          <legend>Form Name</legend>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="textinput">UserName</label>
+            <div class="col-md-4">
+              <input id="username" name="username" type="text" placeholder="username" class="form-control input-md">
+            </div>
+          </div>
+
+          <!-- Password input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="passwordinput">Password</label>
+            <div class="col-md-4">
+              <input id="passwordinput" name="passwordinput" type="password" placeholder="password"
+                class="form-control input-md">
+            </div>
+          </div>
+          </br>
+          <!-- Button -->
+          <div class="form-group">
+            <div class="col-md-4">
+              <button id="save" type="submit" name="submit" class="btn btn-primary" >Log In</button>
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</body>
+<script>
+function validate(){
+  let name = document.getElementById("username").value
+  let pass = document.getElementById("passwordinput").value
+  if(name === null || name === '' || typeof name ==='undefined'){
+    alert("Invalid UserName")
+    return false
+  }else if(pass === null || pass === '' || typeof pass ==='undefined'){
+    alert("Invalid Password")
+    return false
+  }
+
+}
+</script>
+</html>

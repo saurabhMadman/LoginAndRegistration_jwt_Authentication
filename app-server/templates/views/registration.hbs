@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+     crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"> </script>
+</head>
+
+<body>
+    <div class=".col-md-3">
+        <div class="bg-success p-2 text-dark bg-opacity-50">
+            <div>{{>header}}</div>
+        </div>
+    </div>
+    <nav aria-label="breadcrumb" style="padding-left: 200px;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+        </ol>
+    </nav>
+    <div class="p-3 mb-2 bg-info text-dark" style="margin-left: 200px;margin-right: 600px;">
+        <form id="reg-form" class="form-horizontal" style="padding-left:70px;">
+            <fieldset>
+                </br>
+                <h1>{{message}}</h1>
+                </br>
+                <!-- Form Name -->
+                <legend>Registration Form</legend>
+                </br>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">UserName</label>
+                    <div class="col-md-4">
+                        <input id="username" name="username" type="text" placeholder="username"
+                            class="form-control input-md" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="passwordinput">Password</label>
+                    <div class="col-md-4">
+                        <input id="passwordinput" name="passwordinput" type="password" placeholder="password"
+                            class="form-control input-md" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Age</label>
+                    <div class="col-md-4">
+                        <input id="userage" name="userage" type="text" placeholder="age" class="form-control input-md"
+                            autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Phone</label>
+                    <div class="col-md-4">
+                        <input id="userphone" name="userphone" type="text" placeholder="Number"
+                            class="form-control input-md" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Email</label>
+                    <div class="col-md-4">
+                        <input id="useremail" name="useremail" type="text" placeholder="email"
+                            class="form-control input-md" autocomplete="off">
+                    </div>
+                </div>
+                </br>
+
+                <!-- Button -->
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <div class="col-md-4">
+                        <button id="save" name="singlebutton" class="btn btn-primary">Sign In</button>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+    <div class="saved-text">
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        const form = document.getElementById('reg-form')
+        form.addEventListener('submit', registerUser)
+    })
+
+    async function registerUser(event) {
+        event.preventDefault()
+        const username = document.getElementById('username').value
+        const passwordinput = document.getElementById('passwordinput').value
+        const userage = document.getElementById('userage').value
+        const userphone = document.getElementById('userphone').value
+        const useremail = document.getElementById('useremail').value
+
+        const result = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username,
+                passwordinput,
+                userage,
+                userphone,
+                useremail
+            })
+        }).then((res) => res.json())
+
+        if (result.status === 'ok') {
+            // everythign went fine
+            alert('Success')
+            clearAll()
+        } else {
+            alert(result.error)
+        }
+    }
+  
+function clearAll(){
+     document.getElementById('username').value = ' '
+     document.getElementById('passwordinput').value = ' '
+     document.getElementById('userage').value = ' '
+     document.getElementById('userphone').value = ' '
+     document.getElementById('useremail').value = ' '
+}
+
+
+</script>
+</html>
