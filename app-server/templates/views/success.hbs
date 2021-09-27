@@ -21,6 +21,7 @@
             <div>
             </div>
         </div>
+        <input type="hidden" id="role" name="custId" value="">
         <div style="padding: 6px;">
             <nav aria-label="breadcrumb" style="padding-left: 0px;">
                 <ol class="breadcrumb">
@@ -28,6 +29,7 @@
                 </ol>
             </nav>
         </div>
+         
         <div  style="padding: 20px;"><strong> <div class="alert alert-info alert-dismissible">User Data</div></strong>
             <table id="divIncidents" class="table table-striped">
                 <thread>
@@ -43,11 +45,18 @@
         <div id="divErr"></div>
     </body>
 <script>
-   $(document).ready(function () {
-       getallusers()
-       getusername()
-   
+   $(document).ready(function (event) {
+        getusername()
+       
 });
+
+function checkAndLoad(){
+    let infodata = document.getElementById("role").value;
+       if(infodata === "admin"){
+          // window.Storage = data.token
+          getallusers()
+       } 
+}
 
 function getallusers(){
     $.ajax({  
@@ -81,7 +90,9 @@ function getusername(){
        dataType: "json",  
        cache: false,  
      }).done(function(data) {  
-       document.getElementById("username").innerText ="Welcome :" data["data"].username
+       document.getElementById("username").innerText ="Welcome :" +data["data"].username
+       document.getElementById("role").value = data["data"].role
+       checkAndLoad()
 });
 } 
 </script>

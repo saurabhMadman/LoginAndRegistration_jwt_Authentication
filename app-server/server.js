@@ -12,7 +12,7 @@ const JWT_SECRET = 'somerandomKeyto@@#~~@#%'
 var token = null
 let username = null;
 //Dd connection
-const url ="mongodb+srv://max:@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
+const url ="mongodb+srv://max:<password>@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
 mongoose.connect(url, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -65,7 +65,7 @@ app.get('/api/success', (req, res) => {
 //registration page rendering
 app.get('/api/reg', (req, res) => {
     res.render("registration", {
-      title: "Login Page",
+      title: "Registration Page",
     });
   });
 
@@ -148,14 +148,20 @@ app.post('/api/register', async (req, res) => {
 	}
     //encrypt password
 	const password = await bcrypt.hash(passwordinput, 7)
+	const role = "user"
 
+    const count = await UserRegitration.count({})
+	if(count === 0){
+       role = "admin"
+	}
 	try {
 		const response = await UserRegitration.create({
 			username,
 			password,
             age,
             phone,
-            email
+            email,
+			role
 		})
 		   console.log('User created successfully: ', response)
 	} catch (error) {
@@ -170,7 +176,7 @@ app.post('/api/register', async (req, res) => {
 })
 
 
-
+//starting server
 app.listen(3000, () => {
 	console.log('Server up at 3000')
 })
