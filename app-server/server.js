@@ -12,7 +12,7 @@ const localStorage = require('localStorage');
 const accessTokenSecret = 'Thisismysecretkeyforjwt@#';
 
 //Dd connection
-const url ="mongodb+srv://max:maxpassword@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
+const url ="mongodb+srv://max:<dbpassword>@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
 mongoose.connect(url, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
