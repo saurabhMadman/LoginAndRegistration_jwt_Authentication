@@ -1,34 +1,34 @@
 const express = require('express')
 const path = require('path')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-const UserRegitration =require('./model/RegistrationSchema')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const hbs = require('hbs')
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const UserRegitration =require('./model/RegistrationSchema');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const hbs = require('hbs');
+const localStorage = require('localStorage');
 
 //scret Key for JWT joken generation
-const JWT_SECRET = 'somerandomKeyto@@#~~@#%'
-var token = null
-let username = null;
+const accessTokenSecret = 'Thisismysecretkeyforjwt@#';
+
 //Dd connection
-const url ="mongodb+srv://max:<password>@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
+const url ="mongodb+srv://max:maxpassword@cluster0.r0q11.mongodb.net/sample_registration?retryWrites=true&w=majority"
 mongoose.connect(url, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
-})
+});
 
 
-const viewPaths = path.join(__dirname, "../app-server/templates/views")
-const particalsPaths = path.join(__dirname, "../app-server/templates/partials")
+const viewPaths = path.join(__dirname, "../app-server/templates/views");
+const particalsPaths = path.join(__dirname, "../app-server/templates/partials");
 
 //initilizing server
 const app = express()
 //view Engine Setup
-app.set("view engine", "hbs")
-app.set("views", viewPaths)
-hbs.registerPartials(particalsPaths)
-app.use(express.static('./public'))
+app.set("view engine", "hbs");
+app.set("views", viewPaths);
+hbs.registerPartials(particalsPaths);
+app.use(express.static('./public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -54,12 +54,24 @@ app.get('/api/failpage', (req, res) => {
   });
 
 //success page rendering  
-app.get('/api/success', (req, res) => {
-	return res.render("success", {
-	title: "Login Success",
-	tokenkey: token
-  });
-});
+app.get('/api/success', (req, res,) => {
+	const token = localStorage.getItem("token");
+	console.log(token)
+    if (!token) {
+		return res.status(403).send("A token is required for authentication");
+	  }
+	try{
+		const decoded = jwt.verify(token, accessTokenSecret);
+		if(req.username = decoded){
+			return res.render("success",{
+				title: "Logged In Page",
+			});
+		}
+	  } catch (err) {
+		return res.status(401).send("Invalid Token");
+	  }
+})
+
 
   
 //registration page rendering
@@ -87,7 +99,7 @@ app.get('/api/getusername', async(req,res)=>{
 	if(!user){
        return res.redirect(`failpage`)
 	}else{
-		return res.json({data: user, tokenkey:token})
+		return res.json({data: user})
 	}
 })
 
@@ -104,16 +116,12 @@ app.post('/api/login', async (req, res) => {
 	}
 	if (await bcrypt.compare(passwordinput, user.password)) {
 		// the username, password combination is successful
-		token = jwt.sign(
-			{
-				id: user._id,
-				username: user.username
-			},
-			JWT_SECRET
-		)
-		return res.redirect('success')
+	    const accessToken = jwt.sign({ username: username}, accessTokenSecret,{expiresIn:3000});
+		console.log(accessToken);
+		localStorage.setItem('token',accessToken);
+		return res.redirect('success');
 	}
-	return res.redirect(`failpage`)
+	return res.redirect(`failpage`);
 })
 
 //Save Action For UserRegistration
