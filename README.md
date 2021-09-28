@@ -1,5 +1,9 @@
 # LoginAndRegistration_jwt_Authentication
 
+# Folder Structure
+![image](https://user-images.githubusercontent.com/32073819/135086244-57a22a77-001f-4e44-9026-54038658ee20.png)
+
+
 # Home Page
 ![image](https://user-images.githubusercontent.com/32073819/135084759-c79154a1-9971-477c-9a59-1bae375110c0.png)
 
